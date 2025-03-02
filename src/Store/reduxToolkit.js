@@ -100,6 +100,4 @@ const addTodoReducer = createSlice({
     },
 });
 
-export const { completeTodos } = addTodoReducer.actions
-
 export default addTodoReducer.reducer;

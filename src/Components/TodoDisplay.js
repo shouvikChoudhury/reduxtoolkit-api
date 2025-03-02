@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteTask, getTask, updateTask, completeTodos } from '../Store/reduxToolkit'
+import { deleteTask, getTask, updateTask } from '../Store/reduxToolkit'
 
 export default function TodoDisplay() {
     const [edit, setedit] = useState(false)
