@@ -4,9 +4,7 @@ export const getTask = createAsyncThunk("post/getTask", async () => {
     return fetch('https://jsonplaceholder.typicode.com/todos').then((res) => res.json())
 })
 
-let del;
 export const deleteTask = createAsyncThunk("post/deleteTask", async (id) => {
-    del = id
     return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         method: 'DELETE',
     }).then((res) => res.json())
@@ -26,15 +24,13 @@ export const createTask = createAsyncThunk("post/createTask", async (value) => {
     }).then((res) => res.json())
 })
 
-let ID, upd;
-export const updateTask = createAsyncThunk("post/updateTask", async ({ id, valnam }) => {
-    ID = id
-    upd = valnam
+export const updateTask = createAsyncThunk("post/updateTask", async ({ id, valnam, flag = false }) => {
     return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
             id: id,
             title: valnam,
+            completed: flag,
             userId: 1,
         }),
         headers: {
@@ -50,16 +46,7 @@ const addTodoReducer = createSlice({
         loading: false,
         error: null,
     },
-    reducers: {
-        completeTodos: (state, action) => {
-            state.todoTask = state.todoTask.map((todo) => {
-                if (todo.id === action.payload) {
-                    todo = { ...todo, completed: true };
-                }
-                return todo;
-            });
-        },
-    },
+    reducers: {},
     extraReducers: {
         [getTask.pending]: (state, action) => {
             state.loading = true;
@@ -77,7 +64,7 @@ const addTodoReducer = createSlice({
         },
         [deleteTask.fulfilled]: (state, action) => {
             state.loading = false;
-            state.todoTask = state.todoTask.filter((item) => item.id !== del)
+            state.todoTask = state.todoTask.filter((item) => item.id !== action.meta.arg)
         },
         [deleteTask.rejected]: (state, action) => {
             state.loading = false;
@@ -101,7 +88,7 @@ const addTodoReducer = createSlice({
             state.loading = false;
             state.todoTask = state.todoTask.map((todo) => {
                 if (todo.id === action.payload.id) {
-                    todo = { ...todo, title: action.payload.title };
+                    todo = { ...todo, title: action.payload.title, completed: action.payload.completed };
                 }
                 return todo;
             });
@@ -109,12 +96,6 @@ const addTodoReducer = createSlice({
         [updateTask.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload
-            state.todoTask = state.todoTask.map((todo) => {
-                if (todo.id === ID) {
-                    todo = { ...todo, title: upd };
-                }
-                return todo;
-            });
         },
 
     },

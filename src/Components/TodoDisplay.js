@@ -15,38 +15,56 @@ export default function TodoDisplay() {
     return (
         <div>
             {todoTask.length == 0 && <h3>No Task added</h3>}
-            {!loading && <div><h3>Task Incomplete</h3>
-                {todoTask && todoTask.map((item) => {
-                    return (
-                        <div className="container" key={item.id}>
-                            {!item.completed &&
-                                (<div className="card d-block">{(edit && ide == item.id) ? <form onSubmit={e => { setedit(!edit); dispatch(updateTask({ id: item.id, valnam: first })) }}>
-                                    <input value={first} onChange={(e) => { setfirst(e.target.value) }} />
-                                    <input type="submit" value="Save" />
-                                </form> : <span>{item.title}</span>}
-                                    <button onClick={() => { setedit(!edit); setfirst(item.title); setide(item.id) }}>Edit</button>
-                                    <button onClick={() => { dispatch(completeTodos(item.id)) }}>Completed</button>
-                                    <button onClick={() => { dispatch(deleteTask(item.id)) }}>Remove</button></div>)
-                            }
-                        </div>
-                    )
-                })}
-
-                <h3 className='mt-5 pt-5'>Task Completed</h3>
-                {todoTask && todoTask.map((item) => {
-                    return (
-                        <div className="container" key={item.id}>
-                            {item.completed &&
-                                (<div className="card d-block">{(edit && ide == item.id) ? <form onSubmit={e => { setedit(!edit); dispatch(updateTask({ id: item.id, valnam: first })) }}>
-                                    <input value={first} onChange={(e) => { setfirst(e.target.value) }} />
-                                    <input type="submit" value="Save" />
-                                </form> : <span>{item.title}</span>}
-                                    <button onClick={() => { setedit(!edit); setfirst(item.title); setide(item.id) }}>Edit</button>
-                                    <button onClick={() => { dispatch(deleteTask(item.id)) }}>Remove</button></div>)
-                            }
-                        </div>
-                    )
-                })}</div>}
+            {!loading && <div style={{ display: 'flex', justifyContent: 'space-between', margin: '25px' }}>
+                <div style={{ border: '2px solid green' }}>
+                    <h3>Task Incomplete</h3>
+                    {todoTask && todoTask.map((item) => {
+                        return (
+                            <>
+                                {!item.completed &&
+                                    (<div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <input type='checkbox' checked={item.completed} onChange={(e) => { dispatch(updateTask({ id: item.id, valnam: item.title, flag: e.target.checked })) }} style={{ accentColor: "blue" }} />
+                                            {(edit && ide == item.id) ? <form onSubmit={e => { setedit(!edit); dispatch(updateTask({ id: item.id, valnam: first })) }}>
+                                                <input value={first} onChange={(e) => { setfirst(e.target.value) }} style={{ accentColor: "#9d3039" }} />
+                                                <input type="submit" value="Save" style={{ display: 'none' }} />
+                                            </form> : <p>{item.title}</p>}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <button onClick={() => { setedit(!edit); setfirst(item.title); setide(item.id) }}>Edit</button>
+                                            <button onClick={() => { dispatch(deleteTask(item.id)) }}>Remove</button>
+                                        </div>
+                                    </div>)
+                                }
+                            </>
+                        )
+                    })}
+                </div>
+                <div style={{ border: '2px solid green' }}>
+                    <h3 className='mt-5 pt-5'>Task Completed</h3>
+                    {todoTask && todoTask.map((item) => {
+                        return (
+                            <>
+                                {item.completed &&
+                                    (<div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <input type='checkbox' checked={item.completed} onChange={(e) => { dispatch(updateTask({ id: item.id, valnam: item.title, flag: e.target.checked })) }} style={{ accentColor: "blue" }} />
+                                            {(edit && ide == item.id) ? <form onSubmit={e => { setedit(!edit); dispatch(updateTask({ id: item.id, valnam: first })) }}>
+                                                <input value={first} onChange={(e) => { setfirst(e.target.value) }} />
+                                                <input type="submit" value="Save" style={{ display: 'none' }} />
+                                            </form> : <p>{item.title}</p>}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <button onClick={() => { setedit(!edit); setfirst(item.title); setide(item.id) }}>Edit</button>
+                                            <button onClick={() => { dispatch(deleteTask(item.id)) }}>Remove</button>
+                                        </div>
+                                    </div>)
+                                }
+                            </>
+                        )
+                    })}
+                </div>
+            </div>}
         </div >
     )
 }
