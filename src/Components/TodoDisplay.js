@@ -6,6 +6,7 @@ export default function TodoDisplay() {
     const [edit, setedit] = useState(false)
     const [first, setfirst] = useState("")
     const [ide, setide] = useState("")
+
     const { loading, todoTask } = useSelector((state) => ({ ...state.todolist }))
     const dispatch = useDispatch()
     useEffect(() => {
